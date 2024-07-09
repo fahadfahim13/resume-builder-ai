@@ -16,11 +16,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="en">
       <body className={inter.className}>
         <Provider>
-        {children}
+          <div className="min-h-full">
+            <Header />
+            <main>
+              <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                {children}
+              </div>
+            </main>
+          </div>
         </Provider>
       </body>
     </html>

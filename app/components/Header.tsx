@@ -8,19 +8,22 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/react";
-import GoogleSignInButton from "@/components/GoogleSignInButton";
 import { Button } from "@/components/ui/button";
-import { BellIcon, MenuIcon } from "lucide-react";
+import { MenuIcon } from "lucide-react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { Session } from "next-auth";
+import { usePathname } from "next/navigation";
 
-const navigation = [{ name: "Dashboard", href: "/", current: true }];
+const navigation = [{ name: "Dashboard", href: "/Dashboard", current: true }];
 
-const Header = (props: { session: Session | null }) => {
-  const { session } = props;
+const Header = () => {
+  const { data: session } = useSession();
+  const path = usePathname();
+  if(path.includes('sign-in')) {
+    return null;
+  }
   return (
     <>
       <Disclosure as="nav" className="bg-gray-800">
@@ -28,8 +31,8 @@ const Header = (props: { session: Session | null }) => {
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <h1 className="font-bold text-2xl bg-gradient-to-r from-green-400 to-blue-500 text-transparent bg-clip-text">
-                  ResumeBuilderAI
+                <h1 className="font-bold text-2xl bg-gradient-to-r from-green-400 to-blue-500 text-transparent bg-clip-text cursor-pointer">
+                  <Link href={'/'}> ResumeBuilderAI </Link>
                 </h1>
               </div>
               {session?.user && (

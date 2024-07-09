@@ -1,24 +1,21 @@
-'use client'
-import { Button } from '@/components/ui/button';
-import { signOut, useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation';
-import React from 'react'
+"use client";
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { signOut, useSession } from "next-auth/react";
+import Header from "../components/Header";
 
 const Dashboard = () => {
-    const {data: session} = useSession({
-        required: true,
-        // onUnauthenticated() {
-        //   redirect('/signIn?callbackUrl=/')
-        // },
-    });
+  const { data: session } = useSession();
   return (
-    <section className='p-24'>
-        <div className='container'>
-            <p>Hello {session?.user?.name}</p>
-            <Button onClick={() => signOut()}>Sign Out</Button>
+    <div className="min-h-full">
+      <Header session={session} />
+      <main>
+        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          
         </div>
-    </section>
-  )
-}
+      </main>
+    </div>
+  );
+};
 
-export default Dashboard
+export default Dashboard;

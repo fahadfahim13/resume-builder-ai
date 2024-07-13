@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -13,10 +14,40 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel"
-
+  type CarouselApi
+} from "@/components/ui/carousel";
+import ResumeInput from "./components/ResumeInput";
+import TemplateSelector from "./components/TemplateSelector";
+import { toast } from "@/components/ui/use-toast";
 
 const Dashboard = () => {
+  const [api, setApi] = useState<CarouselApi>();
+
+  const [userInput, setUserInput] = useState('');
+
+  const goNext = () => {
+    api?.scrollNext(true);
+  }
+
+  const goBack = () => {
+    api?.scrollPrev(true);
+  }
+
+  const generateResume = () => {
+    if (userInput === '') {
+      api?.scrollPrev();
+      return;
+    }
+    toast({
+      title: "Successfully Generated Resume",
+      description: "Your Resume has been generated successfully!!",
+      style: {
+        backgroundColor: 'greenyellow',
+        color: 'black'
+      }
+    });
+  }
+
   return (
     <div className="container w-full">
       <div className="flex justify-between">
@@ -25,12 +56,20 @@ const Dashboard = () => {
           <DialogTrigger>Create New</DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
-              <DialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </DialogDescription>
+              <DialogTitle>Build Your Resume</DialogTitle>
             </DialogHeader>
+            <DialogDescription>
+                <Carousel setApi={setApi} onDrag={() => {}}>
+                  <CarouselContent>
+                    <CarouselItem>
+                      <ResumeInput goNext={goNext} setUserInput={setUserInput} userInput={userInput} />
+                    </CarouselItem>
+                    <CarouselItem>
+                      <TemplateSelector goBack={goBack} generateResume={generateResume} />
+                    </CarouselItem>
+                  </CarouselContent>
+                </Carousel>
+              </DialogDescription>
           </DialogContent>
         </Dialog>
       </div>

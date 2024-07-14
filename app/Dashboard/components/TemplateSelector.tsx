@@ -3,30 +3,16 @@ import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast';
 import { useMutation } from '@tanstack/react-query';
 import { CarouselApi } from '@/components/ui/carousel';
+import { useGetResumeMutation } from '@/lib/redux/APIs/resume';
 
 const TemplateSelector = (props: { goBack: () => void; userInput: string; api: CarouselApi }) => {
     const { goBack, userInput, api } = props;
 
-    const { mutate, isError, isSuccess, data } = useMutation({
-      mutationFn: async () => {
-        const response = await fetch(`${process.env.API_BASE_URL}/ai-resumes`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userInput
-          }),
-        });
-  
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const responseData = await response.json();
-          
-        return responseData;
-      },
-    });
+    const [getResume, {
+      data,
+      isSuccess,
+      isError
+    }] = useGetResumeMutation();
   
     useEffect(() => {
       if (isSuccess && data) {
@@ -54,7 +40,7 @@ const TemplateSelector = (props: { goBack: () => void; userInput: string; api: C
         api?.scrollPrev();
         return;
       }
-      mutate();
+      getResume(JSON.stringify({userInput}));
     };
   return (
     <div className='flex flex-col gap-4'>

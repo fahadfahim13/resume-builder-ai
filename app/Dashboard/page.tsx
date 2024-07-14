@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/carousel";
 import ResumeInput from "./components/ResumeInput";
 import TemplateSelector from "./components/TemplateSelector";
+import { PlusIcon } from "lucide-react";
 
 const Dashboard = () => {
   const [api, setApi] = useState<CarouselApi>();
@@ -35,7 +36,7 @@ const Dashboard = () => {
       <div className="flex justify-between">
         <h1 className="text-2xl">Dashboard</h1>
         <Dialog>
-          <DialogTrigger>Create New</DialogTrigger>
+          <DialogTrigger className="bg-slate-900 text-white px-4 py-2 rounded-lg">Create New</DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Build Your Resume</DialogTitle>

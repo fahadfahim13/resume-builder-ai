@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import { Toaster } from "@/components/ui/toaster";
 
 import QueryClientContextProvider from "./components/QueryClientContextProvider";
+import ReduxProvider from "./components/ReduxProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,22 +20,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
     <html lang="en">
       <body className={inter.className}>
         <Provider>
-          <QueryClientContextProvider>
-          <div className="min-h-full">
-            <Header />
-            <main>
-              <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                {children}
+            <ReduxProvider>
+          {/* <QueryClientContextProvider> */}
+              <div className="min-h-full">
+                <Header />
+                <main>
+                  <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                    {children}
+                  </div>
+                </main>
+                <Toaster />
               </div>
-            </main>
-            <Toaster />
-          </div>
-          </QueryClientContextProvider>
+          {/* </QueryClientContextProvider> */}
+            </ReduxProvider>
         </Provider>
       </body>
     </html>

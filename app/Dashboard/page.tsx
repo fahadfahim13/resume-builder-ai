@@ -1,5 +1,5 @@
-"use client"
-import React, { useEffect, useState } from "react";
+"use client";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,41 +12,23 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi
+  type CarouselApi,
 } from "@/components/ui/carousel";
 import ResumeInput from "./components/ResumeInput";
 import TemplateSelector from "./components/TemplateSelector";
-import { toast } from "@/components/ui/use-toast";
 
 const Dashboard = () => {
   const [api, setApi] = useState<CarouselApi>();
-
-  const [userInput, setUserInput] = useState('');
+  const [userInput, setUserInput] = useState("");
 
   const goNext = () => {
     api?.scrollNext(true);
-  }
+  };
 
   const goBack = () => {
     api?.scrollPrev(true);
-  }
+  };
 
-  const generateResume = () => {
-    if (userInput === '') {
-      api?.scrollPrev();
-      return;
-    }
-    toast({
-      title: "Successfully Generated Resume",
-      description: "Your Resume has been generated successfully!!",
-      style: {
-        backgroundColor: 'greenyellow',
-        color: 'black'
-      }
-    });
-  }
 
   return (
     <div className="container w-full">
@@ -59,17 +41,25 @@ const Dashboard = () => {
               <DialogTitle>Build Your Resume</DialogTitle>
             </DialogHeader>
             <DialogDescription>
-                <Carousel setApi={setApi} onDrag={() => {}}>
-                  <CarouselContent>
-                    <CarouselItem>
-                      <ResumeInput goNext={goNext} setUserInput={setUserInput} userInput={userInput} />
-                    </CarouselItem>
-                    <CarouselItem>
-                      <TemplateSelector goBack={goBack} generateResume={generateResume} />
-                    </CarouselItem>
-                  </CarouselContent>
-                </Carousel>
-              </DialogDescription>
+              <Carousel setApi={setApi} onDrag={() => {}}>
+                <CarouselContent>
+                  <CarouselItem>
+                    <ResumeInput
+                      goNext={goNext}
+                      setUserInput={setUserInput}
+                      userInput={userInput}
+                    />
+                  </CarouselItem>
+                  <CarouselItem>
+                    <TemplateSelector
+                      goBack={goBack}
+                      api={api}
+                      userInput={userInput}
+                    />
+                  </CarouselItem>
+                </CarouselContent>
+              </Carousel>
+            </DialogDescription>
           </DialogContent>
         </Dialog>
       </div>

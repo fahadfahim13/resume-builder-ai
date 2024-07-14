@@ -10,6 +10,14 @@ const nextConfig = {
         },
       ],
     },
+    async rewrites() {
+      return [
+        {
+          source: '/Dashboard',
+          destination: 'http://localhost:3001/*',
+        },
+      ]
+    },
   }
 
 export default nextConfig;

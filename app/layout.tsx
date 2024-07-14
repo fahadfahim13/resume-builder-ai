@@ -5,6 +5,8 @@ import Provider from "./components/Provider";
 import Header from "./components/Header";
 import { Toaster } from "@/components/ui/toaster";
 
+import QueryClientContextProvider from "./components/QueryClientContextProvider";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -22,6 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Provider>
+          <QueryClientContextProvider>
           <div className="min-h-full">
             <Header />
             <main>
@@ -31,6 +34,7 @@ export default function RootLayout({
             </main>
             <Toaster />
           </div>
+          </QueryClientContextProvider>
         </Provider>
       </body>
     </html>

@@ -1,12 +1,17 @@
 import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast';
-import { useMutation } from '@tanstack/react-query';
 import { CarouselApi } from '@/components/ui/carousel';
 import { useGetResumeMutation } from '@/lib/redux/APIs/resume';
+import { useDispatch } from 'react-redux';
+import { setResume } from '@/lib/redux/Features/Resume/Slice';
+import { ResumeState } from '@/lib/redux/Features/Resume/types';
+import { useRouter } from 'next/navigation';
 
 const TemplateSelector = (props: { goBack: () => void; userInput: string; api: CarouselApi }) => {
     const { goBack, userInput, api } = props;
+    const dispatch = useDispatch();
+    const router = useRouter();
 
     const [getResume, {
       data,
@@ -16,15 +21,16 @@ const TemplateSelector = (props: { goBack: () => void; userInput: string; api: C
   
     useEffect(() => {
       if (isSuccess && data) {
-        console.log(data);
+        dispatch(setResume(data as ResumeState));
         toast({
           title: "Successfully Generated Resume",
           description: "Your Resume has been generated successfully!!",
           style: {
             backgroundColor: "green",
-            color: "black",
+            color: "white",
           },
         });
+        router.push('/Resume');
       }
       if (isError) {
         toast({

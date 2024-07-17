@@ -6,14 +6,22 @@ import { useSelector } from "react-redux";
 import BasicTemplate from "@/components/Custom/Basic";
 import { Button } from "@/components/ui/button";
 import { useReactToPrint } from "react-to-print";
+import ResumeController from "@/components/Custom/ResumeController";
+import { useForm } from "react-hook-form";
 
 const ResumeView = () => {
   const resume = useSelector((state: RootState) => state.resume);
 
+  const form = useForm();
+
+  function onSubmit(values: any) {
+    console.log(values);
+  }
+
   const divRef = useRef<HTMLElement>(null);
 
   const handlePrint = useReactToPrint({
-    documentTitle: "Print This Document",
+    documentTitle: "Print This Resume",
     onBeforePrint: () => console.log("before printing..."),
     onAfterPrint: () => console.log("after printing..."),
     pageStyle: "padding: 16",
@@ -26,6 +34,7 @@ const ResumeView = () => {
       <div className="flex gap-4 flex-wrap min-h-[100vh]">
         
         <div className="min-w-80 border border-slate-400 rounded-lg p-6">
+          <ResumeController form={form} onSubmit={onSubmit} />
           <Button
             onClick={() => {
               handlePrint(null, () => divRef.current);

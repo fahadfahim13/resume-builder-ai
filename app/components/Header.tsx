@@ -21,12 +21,14 @@ const navigation = [{ name: "Dashboard", href: "/Dashboard", current: true }];
 const Header = () => {
   const { data: session } = useSession();
   const path = usePathname();
+
   if(path.includes('sign-in')) {
     return null;
   }
+
   return (
     <>
-      <Disclosure as="nav" className="bg-gray-800">
+      <Disclosure as="nav" className="bg-gray-800 dark:bg-slate-400">
         <div className="container">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
@@ -91,7 +93,7 @@ const Header = () => {
                 ) : (
                   <Link
                     href={"/sign-in"}
-                    className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+                    className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-md px-3 py-2 text-sm font-medium"
                   >
                     Sign In
                   </Link>

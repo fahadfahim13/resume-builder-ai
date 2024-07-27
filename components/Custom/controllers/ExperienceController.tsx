@@ -105,7 +105,7 @@ const ExperienceController = (props: {
                     name={`${formValue}.${idx}.${f?.name}` ?? ""}
                     render={({ field }) => (
                       <FormItem className="mt-2">
-                        <FormLabel>{f.title}</FormLabel>
+                        {!showdescription && <FormLabel>{f.title}</FormLabel>}
                         <FormControl>
                           {f.name !== "description" ? (
                             <Input

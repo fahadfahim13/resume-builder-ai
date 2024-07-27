@@ -8,9 +8,8 @@ import { Button } from "../ui/button";
 
 const ResumeController = (props: {
   form: UseFormReturn<any, any, undefined>;
-  onSubmit: (values: any) => void;
 }) => {
-  const { form, onSubmit } = props;
+  const { form } = props;
   const dispatch = useDispatch();
 
   return (
@@ -47,8 +46,43 @@ const ResumeController = (props: {
             showdescription={true}
           />
         </AccordionItem>
+        <AccordionItem
+          value="item-4"
+          className="border border-black dark:border-white rounded-lg px-2 my-2"
+        >
+          <ExperienceController
+            form={form}
+            companies={form.getValues("education")}
+            formValue={"education"}
+            tabTitle={"Education"}
+            showdescription={false}
+          />
+        </AccordionItem>
+        <AccordionItem
+          value="item-5"
+          className="border border-black dark:border-white rounded-lg px-2 my-2"
+        >
+          <ExperienceController
+            form={form}
+            companies={form.getValues("achievements")}
+            formValue={"achievements"}
+            tabTitle={"Achievements"}
+            showdescription={false}
+          />
+        </AccordionItem>
+        <AccordionItem
+          value="item-6"
+          className="border border-black dark:border-white rounded-lg px-2 my-2"
+        >
+          <ExperienceController
+            form={form}
+            companies={form.getValues("skills")}
+            formValue={"skills"}
+            tabTitle={"Skills"}
+            showdescription={false}
+          />
+        </AccordionItem>
       </Accordion>
-      <Button onClick={() => onSubmit(form.getValues())}>Submit</Button>
     </div>
   );
 };

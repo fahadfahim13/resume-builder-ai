@@ -13,19 +13,37 @@ export const introductionForms = [
 export const experienceForms = (part?: string) => [
   {
     name: "companyName",
-    title: part === "projects" ? "Project Name" : "Company Name",
+    title:
+      part === "projects"
+        ? "Project Name"
+        : part === "education"
+          ? "School Name"
+          : part === "achievements"
+            ? "Achievement Title"
+            : "Company Name",
     placeholder:
       part === "projects"
         ? "i. e. E-Commerce Web Application"
-        : "i.e. Company IT Solutions Ltd.",
+        : part === "education"
+          ? "i.e. ABC University"
+          : part === "achievements"
+            ? "Champion"
+            : "i.e. Company IT Solutions Ltd.",
   },
   {
     name: "jobTitle",
-    title: part === "projects" ? "Tech Stack" : "Job Title",
+    title:
+      part === "projects"
+        ? "Tech Stack"
+        : part === "education"
+          ? "Degree"
+          : "Job Title",
     placeholder:
       part === "projects"
         ? "i.e. React, Redux, Node, TypeScript, AWS, PostgreSQL, etc."
-        : "i.e. Full Stack Software Engineers",
+        : part === "education"
+          ? "i.e. B.Sc. in Computer Science & Engineering"
+          : "i.e. Full Stack Software Engineers",
   },
   {
     name: "duration",
@@ -35,7 +53,11 @@ export const experienceForms = (part?: string) => [
         ? "i.e. project.url.com"
         : "i.e. 01 Jan, 2020 - 1 Jan, 2024",
   },
-  { name: "description", title: "Description", placeholder: "" },
+  {
+    name: "description",
+    title: part === "projects" || part === "companies" ? "Description" : "",
+    placeholder: "",
+  },
 ];
 
 export interface ExperienceType {

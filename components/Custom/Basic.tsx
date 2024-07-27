@@ -76,22 +76,28 @@ const BasicTemplate = (props: {
           <h1 className="text-lg ">Education</h1>
         </div>
         <hr className="border my-2" />
-      </div>
-      <div>
-        <div className="flex justify-between my-2">
-          <div className="grow">
-            <h4 className="text-md font-bold">BUET</h4>
-            <h5>B.Sc. in Computer Science and Engineering</h5>
-          </div>
-          <h4 className="text-sm flex-none">01 Jan, 2022 - 30 June, 2024</h4>
-        </div>
-        <div className="flex justify-between my-2">
-          <div className="grow">
-            <h4 className="text-md font-bold">Dhaka College</h4>
-            <h5>H.S.C in Science</h5>
-          </div>
-          <h4 className="text-sm flex-none">01 Jan, 2022 - 30 June, 2024</h4>
-        </div>
+        {form.watch("education")?.length > 0 &&
+          form.watch("education").map((cmp: any, idx: number) => (
+            <div>
+              <div className="flex justify-between my-2">
+                <div className="grow">
+                  <h4 className="text-md font-bold text-wrap break-words">
+                    {form.watch(`education.${idx}.companyName`) ??
+                      "School Name"}
+                  </h4>
+                  <h5 className=" text-wrap break-words">
+                    {form.watch(`education.${idx}.jobTitle`) ??
+                      "B.Sc. in Computer Science & Engineering"}
+                  </h5>
+                </div>
+                <h4 className="text-sm flex-none  text-wrap break-words">
+                  {form.watch(`education.${idx}.duration`) ??
+                    "01 Jan, 2020 - 01 July, 2024"}
+                </h4>
+              </div>
+              <hr className="border my-2" />
+            </div>
+          ))}
       </div>
       {/* Projects */}
       <div>
@@ -104,15 +110,16 @@ const BasicTemplate = (props: {
             <div>
               <div className="flex justify-between my-2">
                 <div className="grow">
-                  <h4 className="text-md font-bold">
-                    {form.watch(`projects.${idx}.jobTitle`) ?? "Project Name"}
-                  </h4>
-                  <h5>
+                  <h4 className="text-md font-bold text-wrap break-words">
                     {form.watch(`projects.${idx}.companyName`) ??
+                      "Project Name"}
+                  </h4>
+                  <h5 className=" text-wrap break-words">
+                    {form.watch(`projects.${idx}.jobTitle`) ??
                       "React, Node.js, Redux, AWS"}
                   </h5>
                 </div>
-                <h4 className="text-sm flex-none">
+                <h4 className="text-sm flex-none text-wrap break-words">
                   {form.watch(`projects.${idx}.duration`) ?? "Project URL"}
                 </h4>
               </div>
@@ -135,23 +142,27 @@ const BasicTemplate = (props: {
         <div className="flex flex-col justify-center align-middle text-center mt-2">
           <h1 className="text-lg ">Achievements</h1>
         </div>
-        <hr className="border my-2 " />
-      </div>
-      <div>
-        <div className="flex justify-between my-2">
-          <div className="grow">
-            <h4 className="text-md font-bold">BUET</h4>
-            <h5>B.Sc. in Computer Science and Engineering</h5>
-          </div>
-          <h4 className="text-sm flex-none">01 Jan, 2022 - 30 June, 2024</h4>
-        </div>
-        <div className="flex justify-between my-2">
-          <div className="grow">
-            <h4 className="text-md font-bold">Dhaka College</h4>
-            <h5>H.S.C in Science</h5>
-          </div>
-          <h4 className="text-sm flex-none">01 Jan, 2022 - 30 June, 2024</h4>
-        </div>
+        <hr className="border my-2" />
+        {form.watch("achievements")?.length > 0 &&
+          form.watch("achievements").map((cmp: any, idx: number) => (
+            <div>
+              <div className="flex justify-between my-2">
+                <div className="grow">
+                  <h4 className="text-md font-bold text-wrap break-words">
+                    {form.watch(`achievements.${idx}.companyName`) ??
+                      "Champion at Hackathon "}
+                  </h4>
+                  {/* <h5>
+                    {form.watch(`achievements.${idx}.description`) ?? "Jan, 2015"}
+                  </h5> */}
+                </div>
+                <h4 className="text-sm flex-none text-wrap break-words">
+                  {form.watch(`achievements.${idx}.duration`) ?? "Jan, 2015"}
+                </h4>
+              </div>
+              <hr className="border my-2" />
+            </div>
+          ))}
       </div>
       {/* Skills */}
       <div>

@@ -26,21 +26,16 @@ const ResumeView = () => {
 
   const form = useForm({
     defaultValues: {
-      fullName:
-        JSON.parse(resumeData?.resumeJson ?? "{}")?.introduction?.header ?? "",
-      title:
-        JSON.parse(resumeData?.resumeJson ?? "{}")?.introduction?.subHeader ??
-        "",
-      address:
-        JSON.parse(resumeData?.resumeJson ?? "{}")?.introduction?.header3 ?? "",
-      phone:
-        JSON.parse(resumeData?.resumeJson ?? "{}")?.introduction
-          ?.smallDescription?.phone ?? "",
-      email:
-        JSON.parse(resumeData?.resumeJson ?? "{}")?.introduction
-          ?.smallDescription?.email ?? "",
+      fullName: "",
+      title: "",
+      address: "",
+      phone: "",
+      email: "",
       companies: [],
       projects: [],
+      education: [],
+      achievements: [],
+      skills: [],
     },
   });
 
@@ -65,7 +60,27 @@ const ResumeView = () => {
         jobTitle: ex.header3,
         description: ex.description,
       }));
-      console.log({ companies });
+      const education = obj.education.map((ex: any) => ({
+        companyName: ex.header,
+        duration: ex.header3,
+        jobTitle: ex.subHeader,
+        description: ex.description,
+      }));
+
+      const achievements = obj.achievements.map((ex: any) => ({
+        companyName: ex.header,
+        duration: ex.description,
+        jobTitle: ex.description,
+        description: ex.description,
+      }));
+
+      const skills = obj.skills.description.map((ex: any) => ({
+        companyName: ex.header,
+        duration: ex.header3,
+        jobTitle: ex.subHeader,
+        description: ex.description,
+      }));
+
       form.setValue("fullName", obj?.introduction?.header ?? "");
       form.setValue("title", obj?.introduction?.subHeader ?? "");
       form.setValue("address", obj?.introduction?.header3 ?? "");
@@ -73,11 +88,14 @@ const ResumeView = () => {
       form.setValue("email", obj?.introduction?.smallDescription?.email ?? "");
       form.setValue("companies", companies);
       form.setValue("projects", projects);
+      form.setValue("education", education);
+      form.setValue("achievements", achievements);
+      form.setValue("skills", skills);
     }
   }, [resumeDataEror, resumeDataLoading, resumeDataSuccess, resumeData]);
 
-  function onSubmit(values: any) {
-    console.log(values);
+  function onSubmit() {
+    console.log(form.getValues());
   }
 
   const divRef = useRef<HTMLElement>(null);
@@ -95,14 +113,18 @@ const ResumeView = () => {
       <h1 className="text-2xl p-4">Resume Builder</h1>
       <div className="flex gap-4 flex-wrap min-h-[100vh]">
         <div className="w-[30rem] border border-slate-400 rounded-lg p-6">
-          <ResumeController form={form} onSubmit={onSubmit} />
-          <Button
-            onClick={() => {
-              handlePrint(null, () => divRef.current);
-            }}
-          >
-            Export
-          </Button>
+          <ResumeController form={form} />
+          <div className="flex flex-row justify-end gap-4">
+            <Button onClick={onSubmit}>Save</Button>
+            <Button
+              onClick={() => {
+                handlePrint(null, () => divRef.current);
+              }}
+              variant={"outline"}
+            >
+              Export
+            </Button>
+          </div>
         </div>
         <div className="w-7/12 border border-slate-400 rounded-lg p-6 flex-1">
           <BasicTemplate

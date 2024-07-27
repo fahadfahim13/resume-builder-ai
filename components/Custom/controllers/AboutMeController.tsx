@@ -34,12 +34,17 @@ const AboutMeController = (props: {
             {introductionForms.map((f) => (
               <FormField
                 control={form.control}
+                defaultValue={form.getValues(f.name)}
                 name={f.name}
                 render={({ field }) => (
                   <FormItem className="mt-2">
                     <FormLabel>{f.title}</FormLabel>
                     <FormControl>
-                      <Input placeholder={f.placeholder} {...field} />
+                      <Input
+                        defaultValue={form.getValues(f.name)}
+                        placeholder={f.placeholder}
+                        {...form.register(f.name)}
+                      />
                     </FormControl>
                   </FormItem>
                 )}

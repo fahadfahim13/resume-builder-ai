@@ -4,21 +4,14 @@ import { FieldValues, UseFormReturn } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import AboutMeController from "./controllers/AboutMeController";
 import ExperienceController from "./controllers/ExperienceController";
+import { Button } from "../ui/button";
 
 const ResumeController = (props: {
-  form: UseFormReturn<FieldValues, any, any>;
+  form: UseFormReturn<any, any, undefined>;
   onSubmit: (values: any) => void;
 }) => {
   const { form, onSubmit } = props;
-  const [aboutMe, setAboutMe] = useState({
-    fullName: "",
-    title: "",
-    address: "",
-    phone: "",
-    email: "",
-  });
   const dispatch = useDispatch();
-  const [html, setHtml] = useState("");
 
   return (
     <div>
@@ -36,11 +29,26 @@ const ResumeController = (props: {
         >
           <ExperienceController
             form={form}
-            html={html}
-            onDescriptionChange={(val: string) => setHtml(val)}
+            companies={form.getValues("companies")}
+            formValue={"companies"}
+            tabTitle={"Professional Experience"}
+            showdescription={true}
+          />
+        </AccordionItem>
+        <AccordionItem
+          value="item-3"
+          className="border border-black dark:border-white rounded-lg px-2 my-2"
+        >
+          <ExperienceController
+            form={form}
+            companies={form.getValues("projects")}
+            formValue={"projects"}
+            tabTitle={"Projects"}
+            showdescription={true}
           />
         </AccordionItem>
       </Accordion>
+      <Button onClick={() => onSubmit(form.getValues())}>Submit</Button>
     </div>
   );
 };

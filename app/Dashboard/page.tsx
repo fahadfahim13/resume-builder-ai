@@ -48,12 +48,12 @@ const Dashboard = () => {
   const [userInput, setUserInput] = useState("");
 
   useEffect(() => {
-    if (status === "authenticated" && userData.user?.email) {
+    if (status === "authenticated" && userData.user?.email && !allResumes) {
       getAllResume({
         userEmail: userData.user?.email,
       });
     }
-  }, [userData, status]);
+  }, [userData, status, allResumes]);
 
   const goNext = () => {
     api?.scrollNext(true);

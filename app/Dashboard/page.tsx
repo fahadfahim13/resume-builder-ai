@@ -113,7 +113,7 @@ const Dashboard = () => {
                 }}
               >
                 <CardHeader>
-                  <CardTitle>{res.name}</CardTitle>
+                  <CardTitle>{res._id}</CardTitle>
                   <CardDescription></CardDescription>
                 </CardHeader>
                 {/* <CardContent>

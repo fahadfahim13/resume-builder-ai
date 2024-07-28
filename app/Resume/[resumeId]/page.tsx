@@ -8,8 +8,12 @@ import { useReactToPrint } from "react-to-print";
 import ResumeController from "@/components/Custom/ResumeController";
 import { useForm } from "react-hook-form";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { useGetDetailsResumeQuery } from "@/lib/redux/APIs/resume";
+import {
+  useGetDetailsResumeQuery,
+  useUpdateResumeMutation,
+} from "@/lib/redux/APIs/resume";
 import { useSession } from "next-auth/react";
+import { toast } from "@/components/ui/use-toast";
 
 const ResumeView = () => {
   const { resumeId } = useParams();
@@ -23,6 +27,46 @@ const ResumeView = () => {
     isError: resumeDataEror,
     isLoading: resumeDataLoading,
   } = useGetDetailsResumeQuery(resumeId.toString());
+
+  const [
+    updateResume,
+    {
+      data: resumeUpdateResponse,
+      isSuccess: resumeUpdateSuccess,
+      isError: resumeUpdateError,
+      isLoading: resumeUpdateLoading,
+    },
+  ] = useUpdateResumeMutation();
+
+  useEffect(() => {
+    if (
+      resumeUpdateResponse &&
+      !resumeUpdateLoading &&
+      !resumeUpdateError &&
+      resumeUpdateSuccess
+    ) {
+      toast({
+        title: "Successfully Updated Resume",
+        description: "Your Resume has been updated successfully!!",
+        style: {
+          backgroundColor: "green",
+          color: "white",
+        },
+      });
+    }
+    if (!resumeUpdateLoading && resumeUpdateError && !resumeUpdateSuccess) {
+      toast({
+        title: "Couldn't Update Resume",
+        description: "Something wrong happened!!",
+        variant: "destructive",
+      });
+    }
+  }, [
+    resumeUpdateResponse,
+    resumeUpdateSuccess,
+    resumeUpdateLoading,
+    resumeUpdateError,
+  ]);
 
   const form = useForm<{
     fullName: string;
@@ -57,7 +101,8 @@ const ResumeView = () => {
       !resumeDataLoading &&
       resumeDataSuccess
     ) {
-      const obj = JSON.parse(JSON.parse(resumeData?.resumeJson));
+      const obj = JSON.parse(resumeData?.resumeJson);
+      console.log(obj);
       const companies = obj.experiences.map((ex: any) => ({
         companyName: ex.header,
         jobTitle: ex.subHeader,
@@ -70,6 +115,7 @@ const ResumeView = () => {
         jobTitle: ex.header3,
         description: ex.description,
       }));
+      console.log({ projects: obj.introduction });
       const education = obj.education.map((ex: any) => ({
         companyName: ex.header,
         duration: ex.header3,
@@ -170,6 +216,11 @@ const ResumeView = () => {
     };
 
     console.log(resumeObj);
+    const reqObject = {
+      ...resumeData,
+      resumeJson: JSON.stringify(resumeObj),
+    };
+    updateResume(reqObject);
     handlePrint(null, () => divRef.current);
   }
 

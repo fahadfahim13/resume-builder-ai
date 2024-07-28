@@ -31,6 +31,15 @@ export const aiResumeApi = createApi({
         };
       },
     }),
+    updateResume: builder.mutation({
+      query: (input: any) => {
+        return {
+          url: `/ai-resumes/save`,
+          method: "POST",
+          body: input,
+        };
+      },
+    }),
   }),
 });
 
@@ -38,4 +47,5 @@ export const {
   useGenerateResumeMutation,
   useGetAllResumeMutation,
   useGetDetailsResumeQuery,
+  useUpdateResumeMutation,
 } = aiResumeApi;

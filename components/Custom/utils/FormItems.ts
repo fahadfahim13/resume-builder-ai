@@ -20,7 +20,9 @@ export const experienceForms = (part?: string) => [
           ? "School Name"
           : part === "achievements"
             ? "Achievement Title"
-            : "Company Name",
+            : part === "skills"
+              ? "Skill"
+              : "Company Name",
     placeholder:
       part === "projects"
         ? "i. e. E-Commerce Web Application"
@@ -28,7 +30,9 @@ export const experienceForms = (part?: string) => [
           ? "i.e. ABC University"
           : part === "achievements"
             ? "Champion"
-            : "i.e. Company IT Solutions Ltd.",
+            : part === "skills"
+              ? "i.e. React, Node, AWS, etc."
+              : "i.e. Company IT Solutions Ltd.",
   },
   {
     name: "jobTitle",

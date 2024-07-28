@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -49,11 +49,24 @@ const ExperienceController = (props: {
   formValue: string;
   tabTitle: string;
   showdescription: boolean;
+  showJobTitle: boolean;
+  showDuration: boolean;
 }) => {
-  const { form, companies, formValue, tabTitle, showdescription } = props;
+  const {
+    form,
+    companies,
+    formValue,
+    tabTitle,
+    showdescription,
+    showJobTitle,
+    showDuration,
+  } = props;
   const [experiences, setExperiences] = useState(experienceFields);
 
   useEffect(() => {
+    console.log("Coming in useEffect: ");
+    console.log({ [formValue]: form.getValues(formValue) });
+    console.log(form.getValues(formValue).length);
     let newValue = {
       name: formValue,
       values:
@@ -63,9 +76,9 @@ const ExperienceController = (props: {
         companies.map(() => experienceForms(formValue)),
     };
     setExperiences((prev) => [prev[0], newValue]);
-  }, [form.getValues(formValue).length]);
+  }, [form.getValues(formValue), form.getValues(formValue).length]);
 
-  const handleAddNewCompany = () => {
+  const handleAddNew = () => {
     let newValue = {
       name: formValue,
       values: [
@@ -77,10 +90,24 @@ const ExperienceController = (props: {
       ],
     };
     setExperiences((prev) => [prev[0], newValue]);
+    const newFormValue = [
+      ...form.getValues(formValue),
+      {
+        companyName: "",
+        jobTitle: "",
+        duration: "",
+        description: "",
+      },
+    ];
+    form.setValue(formValue, newFormValue);
   };
 
-  const removeExperience = (id: number) => {
-    let newValue = experiences[1].values.splice(id, 1);
+  const handleRemove = (id: number) => {
+    console.log("Handle Remove:" + id);
+    let newValue = experiences[1].values;
+    console.log({ prev: newValue });
+    newValue = newValue.filter((el, idx) => idx !== id && el);
+    console.log({ next: newValue });
     setExperiences((prev) => [
       prev[0],
       {
@@ -88,6 +115,13 @@ const ExperienceController = (props: {
         values: newValue,
       },
     ]);
+
+    let newFormValue = [...form.getValues(formValue)];
+    console.log({ before: newFormValue });
+    newFormValue = newFormValue.filter((el, idx) => idx !== id && el);
+    console.log({ after: newFormValue });
+    // console.log(newFormValue.splice(id, 1));
+    form.setValue(formValue, newFormValue);
   };
 
   return (
@@ -105,16 +139,23 @@ const ExperienceController = (props: {
                     name={`${formValue}.${idx}.${f?.name}` ?? ""}
                     render={({ field }) => (
                       <FormItem className="mt-2">
-                        {!showdescription && <FormLabel>{f.title}</FormLabel>}
+                        {!(f.name === "description" && !showdescription) &&
+                          !(f.name === "jobTitle" && !showJobTitle) &&
+                          !(!showDuration && f.name === "duration") && (
+                            <FormLabel>{f.title}</FormLabel>
+                          )}
                         <FormControl>
                           {f.name !== "description" ? (
-                            <Input
-                              placeholder={f.placeholder}
-                              {...form.register(
-                                `${formValue}.${idx}.${f?.name}`,
-                              )}
-                              className="w-full"
-                            />
+                            !(f.name === "jobTitle" && !showJobTitle) &&
+                            !(!showDuration && f.name === "duration") && (
+                              <Input
+                                placeholder={f.placeholder}
+                                {...form.register(
+                                  `${formValue}.${idx}.${f?.name}`,
+                                )}
+                                className="w-full"
+                              />
+                            )
                           ) : showdescription ? (
                             <EditorProvider>
                               <Editor
@@ -161,7 +202,7 @@ const ExperienceController = (props: {
                 {ex.length > 0 && (
                   <div className="flex p-4 my-2 justify-between w-full flex-row-reverse">
                     <Button
-                      onClick={() => removeExperience(idx)}
+                      onClick={() => handleRemove(idx)}
                       variant={"destructive"}
                     >
                       {" "}
@@ -175,7 +216,7 @@ const ExperienceController = (props: {
             <Button
               variant={"secondary"}
               className="mt-4 border border-black"
-              onClick={handleAddNewCompany}
+              onClick={handleAddNew}
             >
               + Add New
             </Button>

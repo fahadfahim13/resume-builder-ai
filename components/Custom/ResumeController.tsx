@@ -32,6 +32,8 @@ const ResumeController = (props: {
             formValue={"companies"}
             tabTitle={"Professional Experience"}
             showdescription={true}
+            showJobTitle={true}
+            showDuration={true}
           />
         </AccordionItem>
         <AccordionItem
@@ -44,6 +46,8 @@ const ResumeController = (props: {
             formValue={"projects"}
             tabTitle={"Projects"}
             showdescription={true}
+            showJobTitle={true}
+            showDuration={true}
           />
         </AccordionItem>
         <AccordionItem
@@ -56,6 +60,8 @@ const ResumeController = (props: {
             formValue={"education"}
             tabTitle={"Education"}
             showdescription={false}
+            showJobTitle={true}
+            showDuration={true}
           />
         </AccordionItem>
         <AccordionItem
@@ -68,6 +74,8 @@ const ResumeController = (props: {
             formValue={"achievements"}
             tabTitle={"Achievements"}
             showdescription={false}
+            showJobTitle={false}
+            showDuration={true}
           />
         </AccordionItem>
         <AccordionItem
@@ -80,6 +88,8 @@ const ResumeController = (props: {
             formValue={"skills"}
             tabTitle={"Skills"}
             showdescription={false}
+            showJobTitle={false}
+            showDuration={false}
           />
         </AccordionItem>
       </Accordion>

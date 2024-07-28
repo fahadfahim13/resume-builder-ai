@@ -110,16 +110,16 @@ const BasicTemplate = (props: {
             <div>
               <div className="flex justify-between my-2">
                 <div className="grow">
-                  <h4 className="text-md font-bold text-wrap break-words">
+                  <h4 className="text-md font-bold break-words">
                     {form.watch(`projects.${idx}.companyName`) ??
                       "Project Name"}
                   </h4>
-                  <h5 className=" text-wrap break-words">
+                  <h5 className="break-words">
                     {form.watch(`projects.${idx}.jobTitle`) ??
                       "React, Node.js, Redux, AWS"}
                   </h5>
                 </div>
-                <h4 className="text-sm flex-none text-wrap break-words">
+                <h4 className="text-sm flex-none break-words">
                   {form.watch(`projects.${idx}.duration`) ?? "Project URL"}
                 </h4>
               </div>
@@ -156,7 +156,7 @@ const BasicTemplate = (props: {
                     {form.watch(`achievements.${idx}.description`) ?? "Jan, 2015"}
                   </h5> */}
                 </div>
-                <h4 className="text-sm flex-none text-wrap break-words">
+                <h4 className="text-sm break-words">
                   {form.watch(`achievements.${idx}.duration`) ?? "Jan, 2015"}
                 </h4>
               </div>
@@ -169,22 +169,14 @@ const BasicTemplate = (props: {
         <div className="flex flex-col justify-center align-middle text-center mt-2">
           <h1 className="text-lg ">Skills</h1>
         </div>
-        <hr className="border my-2 " />
-      </div>
-      <div>
-        <div className="flex justify-between my-2">
-          <div className="grow">
-            <h4 className="text-md font-bold">BUET</h4>
-            <h5>B.Sc. in Computer Science and Engineering</h5>
-          </div>
-          <h4 className="text-sm flex-none">01 Jan, 2022 - 30 June, 2024</h4>
-        </div>
-        <div className="flex justify-between my-2">
-          <div className="grow">
-            <h4 className="text-md font-bold">Dhaka College</h4>
-            <h5>H.S.C in Science</h5>
-          </div>
-          <h4 className="text-sm flex-none">01 Jan, 2022 - 30 June, 2024</h4>
+        <hr className="border my-2" />
+        <div className="flex flex-row flex-wrap justify-start my-2 gap-4">
+          {form.watch("skills")?.length > 0 &&
+            form
+              .watch("skills")
+              .map((cmp: any, idx: number) => (
+                <p className="font-semibold">{cmp.jobTitle}</p>
+              ))}
         </div>
       </div>
     </div>

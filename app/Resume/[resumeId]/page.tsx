@@ -24,7 +24,18 @@ const ResumeView = () => {
     isLoading: resumeDataLoading,
   } = useGetDetailsResumeQuery(resumeId.toString());
 
-  const form = useForm({
+  const form = useForm<{
+    fullName: string;
+    title: string;
+    address: string;
+    phone: string;
+    email: string;
+    companies: any[];
+    projects: any[];
+    education: any[];
+    achievements: any[];
+    skills: any[];
+  }>({
     defaultValues: {
       fullName: "",
       title: "",
@@ -47,7 +58,6 @@ const ResumeView = () => {
       resumeDataSuccess
     ) {
       const obj = JSON.parse(JSON.parse(resumeData?.resumeJson));
-      console.log(obj);
       const companies = obj.experiences.map((ex: any) => ({
         companyName: ex.header,
         jobTitle: ex.subHeader,
@@ -75,10 +85,10 @@ const ResumeView = () => {
       }));
 
       const skills = obj.skills.description.map((ex: any) => ({
-        companyName: ex.header,
-        duration: ex.header3,
-        jobTitle: ex.subHeader,
-        description: ex.description,
+        companyName: ex,
+        duration: ex,
+        jobTitle: ex,
+        description: ex,
       }));
 
       form.setValue("fullName", obj?.introduction?.header ?? "");
@@ -94,10 +104,6 @@ const ResumeView = () => {
     }
   }, [resumeDataEror, resumeDataLoading, resumeDataSuccess, resumeData]);
 
-  function onSubmit() {
-    console.log(form.getValues());
-  }
-
   const divRef = useRef<HTMLElement>(null);
 
   const handlePrint = useReactToPrint({
@@ -108,6 +114,65 @@ const ResumeView = () => {
     removeAfterPrint: true,
   });
 
+  function onSubmit() {
+    const formValues = form.getValues();
+    let resumeObj = JSON.parse(JSON.parse(resumeData?.resumeJson));
+
+    resumeObj = {
+      ...resumeObj,
+      introduction: {
+        ...resumeObj.introduction,
+        header: formValues.fullName,
+        subHeader: formValues.title,
+        header3: formValues.address,
+        smallDescription: {
+          ...resumeObj.introduction.smallDescription,
+          email: formValues.email,
+          phone: formValues.phone,
+        },
+      },
+      skills: {
+        ...resumeObj.skills,
+        description: formValues.skills,
+      },
+      experiences: formValues.companies.map((val: any) => ({
+        header: val.companyName ?? "",
+        subHeader: val.jobTitle ?? "",
+        header3: val.duration ?? "",
+        smallDescription: val.description ?? "",
+        descriptionType: "paragraph",
+        description: val.description ?? "",
+      })),
+      education: formValues.education.map((val) => ({
+        header: val.companyName ?? "",
+        subHeader: val.jobTitle ?? "",
+        header3: val.duration ?? "",
+        smallDescription: val.description ?? "",
+        descriptionType: "paragraph",
+        description: val.description ?? "",
+      })),
+      projects: formValues.projects.map((val) => ({
+        header: val.companyName ?? "",
+        subHeader: val.jobTitle ?? "",
+        header3: val.jobTitle ?? "",
+        smallDescription: val.duration ?? "",
+        descriptionType: "paragraph",
+        description: val.duration ?? "",
+      })),
+      achievements: formValues.achievements.map((val) => ({
+        header: val.companyName ?? "",
+        subHeader: val.jobTitle ?? "",
+        header3: val.jobTitle ?? "",
+        smallDescription: val.duration ?? "",
+        descriptionType: "paragraph",
+        description: val.duration ?? "",
+      })),
+    };
+
+    console.log(resumeObj);
+    handlePrint(null, () => divRef.current);
+  }
+
   return (
     <div>
       <h1 className="text-2xl p-4">Resume Builder</h1>
@@ -115,15 +180,7 @@ const ResumeView = () => {
         <div className="w-[30rem] border border-slate-400 rounded-lg p-6">
           <ResumeController form={form} />
           <div className="flex flex-row justify-end gap-4">
-            <Button onClick={onSubmit}>Save</Button>
-            <Button
-              onClick={() => {
-                handlePrint(null, () => divRef.current);
-              }}
-              variant={"outline"}
-            >
-              Export
-            </Button>
+            <Button onClick={onSubmit}>Save & Export</Button>
           </div>
         </div>
         <div className="w-7/12 border border-slate-400 rounded-lg p-6 flex-1">

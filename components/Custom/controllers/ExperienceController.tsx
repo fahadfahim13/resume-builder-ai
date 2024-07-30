@@ -41,7 +41,7 @@ import Editor, {
   Toolbar,
 } from "react-simple-wysiwyg";
 import { Button } from "@/components/ui/button";
-import { DeleteIcon, TrashIcon } from "lucide-react";
+import { TrashIcon } from "lucide-react";
 import DescriptionGeneratorDialog from "../../../app/Resume/components/DescriptionGeneratorDialog";
 
 const ExperienceController = (props: {
@@ -65,9 +65,6 @@ const ExperienceController = (props: {
   const [experiences, setExperiences] = useState(experienceFields);
 
   useEffect(() => {
-    console.log("Coming in useEffect: ");
-    console.log({ [formValue]: form.getValues(formValue) });
-    console.log(form.getValues(formValue).length);
     let newValue = {
       name: formValue,
       values:
@@ -104,11 +101,8 @@ const ExperienceController = (props: {
   };
 
   const handleRemove = (id: number) => {
-    console.log("Handle Remove:" + id);
     let newValue = experiences[1].values;
-    console.log({ prev: newValue });
     newValue = newValue.filter((el, idx) => idx !== id && el);
-    console.log({ next: newValue });
     setExperiences((prev) => [
       prev[0],
       {
@@ -118,10 +112,8 @@ const ExperienceController = (props: {
     ]);
 
     let newFormValue = [...form.getValues(formValue)];
-    console.log({ before: newFormValue });
     newFormValue = newFormValue.filter((el, idx) => idx !== id && el);
-    console.log({ after: newFormValue });
-    // console.log(newFormValue.splice(id, 1));
+
     form.setValue(formValue, newFormValue);
   };
 

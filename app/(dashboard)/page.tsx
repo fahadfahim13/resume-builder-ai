@@ -1,10 +1,41 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useCreateUserMutation } from "@/lib/redux/APIs/user";
+import { toast } from "@/components/ui/use-toast";
 
 const Dashboard = () => {
-  const { status } = useSession();
+  const { status, data: session } = useSession();
+
+  const [
+    createUser,
+    { data: userCreationData, isLoading, isSuccess, isError },
+  ] = useCreateUserMutation();
+
+  useEffect(() => {
+    if (status === "authenticated" && session.user?.email) {
+      createUser(session.user);
+    }
+  }, [status, session?.user?.email]);
+
+  useEffect(() => {
+    if (isSuccess && !isLoading && !isError && userCreationData) {
+      toast({
+        title: "Successfully logged in!!",
+        style: {
+          backgroundColor: "cyan",
+          color: "white",
+        },
+      });
+    }
+    if (isError && !isLoading) {
+      toast({
+        title: "Something wrong happened!",
+        variant: "destructive",
+      });
+    }
+  }, [userCreationData, isLoading, isSuccess, isError]);
 
   return (
     <section className="bg-gray-900 text-white">

@@ -22,7 +22,7 @@ const Header = () => {
   const { data: session } = useSession();
   const path = usePathname();
 
-  if(path.includes('sign-in')) {
+  if (path.includes("sign-in")) {
     return null;
   }
 
@@ -34,7 +34,7 @@ const Header = () => {
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <h1 className="font-bold text-2xl bg-gradient-to-r from-green-400 to-blue-500 text-transparent bg-clip-text cursor-pointer">
-                  <Link href={'/'}> ResumeBuilderAI </Link>
+                  <Link href={"/"}> ResumeBuilderAI </Link>
                 </h1>
               </div>
               {session?.user && (
@@ -83,7 +83,7 @@ const Header = () => {
                       <MenuItem key={"SignOut"}>
                         <p
                           onClick={() => signOut()}
-                          className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
+                          className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 cursor-pointer"
                         >
                           Sign Out
                         </p>
@@ -159,7 +159,7 @@ const Header = () => {
               <Button
                 key={"SignOut"}
                 onClick={() => signOut()}
-                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white hover:cursor-pointer"
+                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white cursor-pointer"
               >
                 Sign Out
               </Button>

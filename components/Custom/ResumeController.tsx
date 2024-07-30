@@ -44,14 +44,14 @@ const ResumeController = (props: {
       <Accordion type="single" collapsible>
         <AccordionItem
           value="item-1"
-          className="border border-black dark:border-white rounded-lg px-2 my-2"
+          className="border border-purple-400 dark:border-white rounded-lg px-2 my-2"
         >
           <AboutMeController form={form} />
         </AccordionItem>
 
         <AccordionItem
           value="item-2"
-          className="border border-black dark:border-white rounded-lg px-2 my-2"
+          className="border border-purple-400 dark:border-white rounded-lg px-2 my-2"
         >
           <ExperienceController
             form={form}
@@ -65,7 +65,7 @@ const ResumeController = (props: {
         </AccordionItem>
         <AccordionItem
           value="item-3"
-          className="border border-black dark:border-white rounded-lg px-2 my-2"
+          className="border border-purple-400 dark:border-white rounded-lg px-2 my-2"
         >
           <ExperienceController
             form={form}
@@ -79,7 +79,7 @@ const ResumeController = (props: {
         </AccordionItem>
         <AccordionItem
           value="item-4"
-          className="border border-black dark:border-white rounded-lg px-2 my-2"
+          className="border border-purple-400 dark:border-white rounded-lg px-2 my-2"
         >
           <ExperienceController
             form={form}
@@ -93,7 +93,7 @@ const ResumeController = (props: {
         </AccordionItem>
         <AccordionItem
           value="item-5"
-          className="border border-black dark:border-white rounded-lg px-2 my-2"
+          className="border border-purple-400 dark:border-white rounded-lg px-2 my-2"
         >
           <ExperienceController
             form={form}
@@ -107,7 +107,7 @@ const ResumeController = (props: {
         </AccordionItem>
         <AccordionItem
           value="item-6"
-          className="border border-black dark:border-white rounded-lg px-2 my-2"
+          className="border border-purple-400 dark:border-white rounded-lg px-2 my-2"
         >
           <ExperienceController
             form={form}

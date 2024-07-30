@@ -7,7 +7,7 @@ import ResumeController from "@/components/Custom/ResumeController";
 import { useForm } from "react-hook-form";
 import { useParams } from "next/navigation";
 import {
-  useGetDetailsResumeQuery,
+  useGetDetailsResumeMutation,
   useUpdateResumeMutation,
 } from "@/lib/redux/APIs/resume";
 import { useSession } from "next-auth/react";
@@ -19,12 +19,15 @@ const ResumeView = () => {
     required: true,
   });
 
-  const {
-    data: resumeData,
-    isSuccess: resumeDataSuccess,
-    isError: resumeDataEror,
-    isLoading: resumeDataLoading,
-  } = useGetDetailsResumeQuery(resumeId.toString());
+  const [
+    getResumeDetails,
+    {
+      data: resumeData,
+      isSuccess: resumeDataSuccess,
+      isError: resumeDataEror,
+      isLoading: resumeDataLoading,
+    },
+  ] = useGetDetailsResumeMutation();
 
   const [
     updateResume,
@@ -35,6 +38,15 @@ const ResumeView = () => {
       isLoading: resumeUpdateLoading,
     },
   ] = useUpdateResumeMutation();
+
+  useEffect(() => {
+    if (userData?.user?.email) {
+      getResumeDetails({
+        id: resumeId.toString(),
+        userEmail: userData?.user?.email ?? "",
+      });
+    }
+  }, [userData?.user?.email]);
 
   useEffect(() => {
     if (

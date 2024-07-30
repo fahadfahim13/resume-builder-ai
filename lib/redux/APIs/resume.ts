@@ -24,11 +24,21 @@ export const aiResumeApi = createApi({
         };
       },
     }),
-    getDetailsResume: builder.query({
-      query: (id: string) => {
+    getDetailsResume: builder.mutation({
+      query: (body: { id: string; userEmail: string }) => {
         return {
-          url: `/ai-resumes/${id}`,
-          method: "GET",
+          url: `/ai-resumes/get-details`,
+          method: "POST",
+          body: body,
+        };
+      },
+    }),
+    generateDescription: builder.mutation({
+      query: (body: { userInput: string; userEmail: string }) => {
+        return {
+          url: `/ai-resumes/generate-desc`,
+          method: "POST",
+          body: body,
         };
       },
     }),
@@ -55,7 +65,8 @@ export const aiResumeApi = createApi({
 export const {
   useGenerateResumeMutation,
   useGetAllResumeMutation,
-  useGetDetailsResumeQuery,
+  useGetDetailsResumeMutation,
   useUpdateResumeMutation,
   useDeleteResumeMutation,
+  useGenerateDescriptionMutation,
 } = aiResumeApi;

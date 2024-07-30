@@ -42,6 +42,7 @@ import Editor, {
 } from "react-simple-wysiwyg";
 import { Button } from "@/components/ui/button";
 import { DeleteIcon, TrashIcon } from "lucide-react";
+import DescriptionGeneratorDialog from "../../../app/Resume/components/DescriptionGeneratorDialog";
 
 const ExperienceController = (props: {
   form: UseFormReturn<FieldValues, any, any>;
@@ -142,7 +143,15 @@ const ExperienceController = (props: {
                         {!(f.name === "description" && !showdescription) &&
                           !(f.name === "jobTitle" && !showJobTitle) &&
                           !(!showDuration && f.name === "duration") && (
-                            <FormLabel>{f.title}</FormLabel>
+                            <div className="flex flex-row justify-between">
+                              <FormLabel>{f.title}</FormLabel>
+                              {f.name === "description" && (
+                                <DescriptionGeneratorDialog
+                                  form={form}
+                                  formValue={`${formValue}.${idx}.${f?.name}`}
+                                />
+                              )}
+                            </div>
                           )}
                         <FormControl>
                           {f.name !== "description" ? (

@@ -1,28 +1,18 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import React, { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import {
   useDeleteResumeMutation,
   useGetAllResumeMutation,
 } from "@/lib/redux/APIs/resume";
 import { useRouter } from "next/navigation";
-import { Edit2Icon, Trash2Icon } from "lucide-react";
+import { Edit2Icon } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import EmptyDashboard from "./components/EmptyDashboard";
 import CreateResumeCarousel from "./components/CreateResumeCarousel";
+import DeleteResumeDialog from "./components/DeleteResumeDialog";
 
 const Dashboard = () => {
-  const [open, setOpen] = useState(false);
   const { status, data: userData } = useSession({
     required: true,
   });
@@ -118,41 +108,19 @@ const Dashboard = () => {
                       {" "}
                       <Edit2Icon />{" "}
                     </button>
-                    <Dialog>
-                      <DialogTrigger>
-                        <button className="btn btn-error btn-sm text-white text-sm">
-                          {" "}
-                          <Trash2Icon />{" "}
-                        </button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Are you sure?</DialogTitle>
-                        </DialogHeader>
-                        <DialogDescription>
-                          Do you want to delete {res.name} ?
-                        </DialogDescription>
-                        <DialogFooter>
-                          <button
-                            className="btn btn-error btn-sm text-white text-sm"
-                            onClick={() => {
-                              deleteResume(res._id);
-                              DialogClose;
-                            }}
-                          >
-                            {isDeleteLoading ? (
-                              <span className="loading loading-spinner text-white loading-sm"></span>
-                            ) : (
-                              "Delete"
-                            )}
-                          </button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
+                    <DeleteResumeDialog
+                      res={res}
+                      onDeleteResume={deleteResume}
+                      isDeleteLoading={isDeleteLoading}
+                    />
                   </div>
                 </div>
               </div>
             ))
+          ) : allResumeLoading ? (
+            <div className="w-full min-h-full flex flex-row justify-center items-center">
+              <span className="loading loading-spinner text-teal-500 loading-xl"></span>
+            </div>
           ) : (
             <EmptyDashboard />
           )}

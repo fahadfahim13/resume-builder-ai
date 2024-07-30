@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
-import { FieldValues, UseFormReturn } from "react-hook-form";
+import {
+  FieldValues,
+  Form,
+  FormProvider,
+  UseFormReturn,
+} from "react-hook-form";
 import { useDispatch } from "react-redux";
 import AboutMeController from "./controllers/AboutMeController";
 import ExperienceController from "./controllers/ExperienceController";
-import { Button } from "../ui/button";
+import { FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import { Input } from "../ui/input";
 
 const ResumeController = (props: {
   form: UseFormReturn<any, any, undefined>;
@@ -14,6 +20,27 @@ const ResumeController = (props: {
 
   return (
     <div>
+      <FormProvider {...form}>
+        <Form {...form} className="w-full p-4">
+          <FormField
+            control={form.control}
+            defaultValue={form.getValues("resumeTitle")}
+            name={"resumeTitle"}
+            render={({ field }) => (
+              <FormItem className="mt-2">
+                <FormLabel>Resume Title</FormLabel>
+                <FormControl>
+                  <Input
+                    defaultValue={form.getValues("resumeTitle")}
+                    placeholder={"Professional Resume"}
+                    {...form.register("resumeTitle")}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </Form>
+      </FormProvider>
       <Accordion type="single" collapsible>
         <AccordionItem
           value="item-1"

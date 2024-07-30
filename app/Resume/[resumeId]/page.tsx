@@ -1,13 +1,11 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import { RootState } from "@/lib/redux/store";
-import { useSelector } from "react-redux";
 import BasicTemplate from "@/components/Custom/Basic";
 import { Button } from "@/components/ui/button";
 import { useReactToPrint } from "react-to-print";
 import ResumeController from "@/components/Custom/ResumeController";
 import { useForm } from "react-hook-form";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import {
   useGetDetailsResumeQuery,
   useUpdateResumeMutation,
@@ -69,6 +67,7 @@ const ResumeView = () => {
   ]);
 
   const form = useForm<{
+    resumeTitle: string;
     fullName: string;
     title: string;
     address: string;
@@ -81,6 +80,7 @@ const ResumeView = () => {
     skills: any[];
   }>({
     defaultValues: {
+      resumeTitle: "",
       fullName: "",
       title: "",
       address: "",
@@ -101,8 +101,9 @@ const ResumeView = () => {
       !resumeDataLoading &&
       resumeDataSuccess
     ) {
-      const obj = JSON.parse(resumeData?.resumeJson);
-      console.log(obj);
+      const obj = JSON.parse(resumeData?.resumeJson).experiences
+        ? JSON.parse(resumeData?.resumeJson)
+        : JSON.parse(JSON.parse(resumeData?.resumeJson));
       const companies = obj.experiences.map((ex: any) => ({
         companyName: ex.header,
         jobTitle: ex.subHeader,
@@ -115,7 +116,6 @@ const ResumeView = () => {
         jobTitle: ex.header3,
         description: ex.description,
       }));
-      console.log({ projects: obj.introduction });
       const education = obj.education.map((ex: any) => ({
         companyName: ex.header,
         duration: ex.header3,
@@ -137,6 +137,7 @@ const ResumeView = () => {
         description: ex,
       }));
 
+      form.setValue("resumeTitle", resumeData.name ?? "");
       form.setValue("fullName", obj?.introduction?.header ?? "");
       form.setValue("title", obj?.introduction?.subHeader ?? "");
       form.setValue("address", obj?.introduction?.header3 ?? "");
@@ -160,9 +161,11 @@ const ResumeView = () => {
     removeAfterPrint: true,
   });
 
-  function onSubmit() {
+  function onSubmit(exp: boolean = false) {
     const formValues = form.getValues();
-    let resumeObj = JSON.parse(JSON.parse(resumeData?.resumeJson));
+    let resumeObj = JSON.parse(resumeData?.resumeJson).experiences
+      ? JSON.parse(resumeData?.resumeJson)
+      : JSON.parse(JSON.parse(resumeData?.resumeJson));
 
     resumeObj = {
       ...resumeObj,
@@ -179,7 +182,7 @@ const ResumeView = () => {
       },
       skills: {
         ...resumeObj.skills,
-        description: formValues.skills,
+        description: formValues.skills.map((sk) => sk.companyName),
       },
       experiences: formValues.companies.map((val: any) => ({
         header: val.companyName ?? "",
@@ -215,13 +218,15 @@ const ResumeView = () => {
       })),
     };
 
-    console.log(resumeObj);
     const reqObject = {
       ...resumeData,
       resumeJson: JSON.stringify(resumeObj),
+      name: form.getValues("resumeTitle") ?? "New Resume",
     };
     updateResume(reqObject);
-    handlePrint(null, () => divRef.current);
+    if (exp) {
+      handlePrint(null, () => divRef.current);
+    }
   }
 
   return (
@@ -231,7 +236,8 @@ const ResumeView = () => {
         <div className="w-[30rem] border border-slate-400 rounded-lg p-6">
           <ResumeController form={form} />
           <div className="flex flex-row justify-end gap-4">
-            <Button onClick={onSubmit}>Save & Export</Button>
+            <Button onClick={() => onSubmit(false)}>Save</Button>
+            <Button onClick={() => onSubmit(true)}>Export</Button>
           </div>
         </div>
         <div className="w-7/12 border border-slate-400 rounded-lg p-6 flex-1">

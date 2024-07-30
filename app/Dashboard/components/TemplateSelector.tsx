@@ -19,7 +19,7 @@ const TemplateSelector = (props: {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const [generateResume, { data, isSuccess, isError }] =
+  const [generateResume, { data, isSuccess, isError, isLoading }] =
     useGenerateResumeMutation();
 
   useEffect(() => {
@@ -59,12 +59,29 @@ const TemplateSelector = (props: {
     generateResume(payload);
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center align-middle min-h-[8rem]">
+        <span className="loading loading-spinner text-accent loading-lg"></span>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-2xl">Select Template</h1>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
-        <div className="h-32 rounded-lg bg-gray-200 flex justify-center align-middle">
+        {/* <div className="h-32 rounded-lg bg-gray-200 flex justify-center align-middle border border-black">
           Basic
+        </div> */}
+        <div className="card bg-base-100 w-48 shadow-md cursor-pointer hover:shadow-xl border border-black">
+          <div className="card-body">
+            <h2 className="card-title">Basic Template</h2>
+            {/* <p>Basic template without person's image and all details with simple design.</p>
+            <div className="card-actions justify-end">
+              <button className="btn btn-primary">Select</button>
+            </div> */}
+          </div>
         </div>
       </div>
       <div className="flex justify-between">

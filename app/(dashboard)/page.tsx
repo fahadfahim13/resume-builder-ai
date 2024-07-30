@@ -1,11 +1,10 @@
-'use client';
+"use client";
 import React from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 const Dashboard = () => {
-
-  const {status} = useSession();
+  const { status } = useSession();
 
   return (
     <section className="bg-gray-900 text-white">
@@ -17,15 +16,16 @@ const Dashboard = () => {
           </h1>
 
           <p className="mx-auto mt-4 max-w-xl sm:text-xl/relaxed">
-          Build professional resumes effortlessly and land your dream job.
+            Build professional resumes effortlessly with AI and land your dream
+            job.
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
               className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
-              href={status === 'unauthenticated' ? "/sign-in" : "/Dashboard"}
+              href={status === "unauthenticated" ? "/sign-in" : "/Dashboard"}
             >
-              {status === 'unauthenticated' ? 'Get Started' : 'Go To Dashboard'}
+              {status === "unauthenticated" ? "Get Started" : "Go To Dashboard"}
             </Link>
 
             {/* <a
